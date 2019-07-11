@@ -1,0 +1,14 @@
+<div mat-dialog-content>
+  <h3>Node Name</h3>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.Name">
+  </mat-form-field>
+  <h3>Node Description</h3>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.Description">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="{nodeName: data.Name, nodeDescription: data.Description}" cdkFocusInitial>Add</button>
+</div>
