@@ -1,3 +1,4 @@
+import { TreeFunctionService } from './service/tree-function.service';
 import { TreeDataService } from './service/tree-data.service';
 import { TreeData } from './service/tree-data.model';
 import { Component, OnInit } from '@angular/core';
@@ -15,51 +16,58 @@ export class AppComponent implements OnInit {
   nestedTreeControl: NestedTreeControl<TreeData>;
   nestedDataSource: MatTreeNestedDataSource<TreeData>;
 
-  constructor(private service: TreeDataService) {  }
+  constructor(
+    private dataService: TreeDataService,
+    private service: TreeFunctionService
+  ) {}
 
   ngOnInit() {
-    this.nestedTreeControl =  new NestedTreeControl<TreeData>(this._getChildren);
+    this.nestedTreeControl = new NestedTreeControl<TreeData>(this._getChildren);
     this.nestedDataSource = new MatTreeNestedDataSource();
-    this.service._dataChange.subscribe(data => this.nestedDataSource.data = data );
+    this.dataService._dataChange.subscribe(
+      data => (this.nestedDataSource.data = data)
+    );
   }
 
   private _getChildren = (node: TreeData) => observableOf(node.Children);
-  hasNestedChild = (_: number, nodeData: TreeData) => (nodeData.Children.length > 0);
+  hasNestedChild = (_: number, nodeData: TreeData) => nodeData.Children.length > 0;
 
-
-  addNode(node: TreeData) {
-    const newNode: TreeData = {
-      Id: this.findNodeMaxId(this.nestedDataSource.data) + 1,
-      Name: node.Name,
-      Description: node.Description,
-      Children: node.Children
-    };
-    this.nestedDataSource.data.push(newNode);
-
+  refreshTreeData() {
     const data = this.nestedDataSource.data;
     this.nestedDataSource.data = null;
     this.nestedDataSource.data = data;
   }
 
-  flatJsonArray(flattenedAray: Array<TreeData>, node: TreeData[]) {
-    const array: Array<TreeData> = flattenedAray;
-    node.forEach(element => {
-      if (element.Children) {
-        array.push(element);
-        this.flatJsonArray(array, element.Children);
+  addNode(node: TreeData) {
+    node.Id = this.service.findNodeMaxId(this.nestedDataSource.data) + 1;
+    this.nestedDataSource.data.push(node);
+    this.refreshTreeData();
+  }
+
+  addChildNode(childrenNodeData) {
+    childrenNodeData.node.Id = this.service.findNodeMaxId(this.nestedDataSource.data) + 1;
+    childrenNodeData.currentNode.Children.push(childrenNodeData.node);
+    this.refreshTreeData();
+  }
+
+  deleteNode(nodeToBeDeleted: TreeData) {
+    const deletedElement: TreeData = this.service.findFatherNode(nodeToBeDeleted.Id, this.nestedDataSource.data);
+    let elementPosition: number;
+    if (deletedElement[0]) {
+      elementPosition = this.service.findPosition(nodeToBeDeleted.Id, [deletedElement[0].Children[deletedElement[1]]]);
+    } else {
+      elementPosition = this.service.findPosition(nodeToBeDeleted.Id, this.nestedDataSource.data);
+    }
+    if (window.confirm('Are you sure you want to delete ' + nodeToBeDeleted.Name + '?' )) {
+      if (!deletedElement[0]) {
+        this.nestedDataSource.data.splice(elementPosition, 1);
+        this.refreshTreeData();
+      } else {
+        deletedElement[0].Children.splice(deletedElement[1], 1);
+        this.refreshTreeData();
       }
-    });
-    return array;
+    }
   }
 
-  findNodeMaxId(node: TreeData[]) {
-    const flatArray = this.flatJsonArray([], node);
-    const flatArrayWithoutChildren = [];
-    flatArray.forEach(element => {
-      flatArrayWithoutChildren.push(element.Id);
-    });
-    return Math.max(...flatArrayWithoutChildren);
-
-  }
 
 }

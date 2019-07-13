@@ -1,15 +1,14 @@
-import { TreeData } from './../../service/tree-data.model';
-import { Component, Inject, Output, EventEmitter, Input } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-
+import { Component, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { TreeData } from 'src/app/service/tree-data.model';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  selector: 'app-add-node',
-  templateUrl: './add-node.component.html',
-  styleUrls: ['./add-node.component.css']
+  selector: 'app-edit-node',
+  templateUrl: './edit-node.component.html',
+  styleUrls: ['./edit-node.component.css']
 })
-export class AddNodeComponent {
+export class EditNodeComponent {
+
   @Input() isTop: boolean;
   @Input() currentNode: TreeData;
   @Output() addedNode = new EventEmitter;
@@ -19,7 +18,7 @@ export class AddNodeComponent {
   constructor(public dialog: MatDialog) {}
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(NewNodeDialog, {
+    const dialogRef = this.dialog.open(EditNodeDialog, {
       width: '250px',
       data: {nodeName: this.name, nodeDescription: this.description}
     });
@@ -42,13 +41,13 @@ export class AddNodeComponent {
 }
 
 @Component({
-  selector: 'app-new-node',
-  templateUrl: 'new-node.html',
+  selector: 'app-edit-node-dialog',
+  templateUrl: 'edit-node-dialog.html',
 })
-export class NewNodeDialog {
+export class EditNodeDialog {
 
   constructor(
-    public dialogRef: MatDialogRef<NewNodeDialog>,
+    public dialogRef: MatDialogRef<EditNodeDialog>,
     @Inject(MAT_DIALOG_DATA) public data: TreeData) {}
 
   onNoClick(): void {

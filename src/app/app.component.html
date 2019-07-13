@@ -1,4 +1,4 @@
-<app-add-node (addedNode)="addNode($event)" ></app-add-node>
+<app-add-node (addedNode)="addNode($event)" [isTop]="true"></app-add-node>
 
 <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="example-tree">
 <!-- Without Children -->
@@ -6,6 +6,9 @@
     <li class="mat-tree-node">
       <button mat-icon-button disabled></button>
       {{node.Name}}
+      <app-delete-node (deletedNode)="deleteNode($event)" [currentNode]="node" ></app-delete-node>
+      <app-edit-node></app-edit-node>
+      <app-add-node (addedNode)="addChildNode($event)" [isTop]="false" [currentNode]="node"></app-add-node>
     </li>
   </mat-tree-node>
 
@@ -20,6 +23,9 @@
           </mat-icon>
         </button>
         {{node.Name}}
+        <app-delete-node (deletedNode)="deleteNode($event)" [currentNode]="node" ></app-delete-node>
+        <app-edit-node></app-edit-node>
+        <app-add-node (addedNode)="addChildNode($event)" [isTop]="false" [currentNode]="node"></app-add-node>
       </div>
       <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
         <ng-container matTreeNodeOutlet></ng-container>

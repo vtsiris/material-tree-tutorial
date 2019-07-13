@@ -2,3 +2,9 @@
   position: relative;
   left: 85%
 }
+
+.add-btn {
+  cursor: pointer;
+  position: absolute;
+  left: 95%
+}

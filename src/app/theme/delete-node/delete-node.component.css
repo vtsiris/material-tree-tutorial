@@ -1,0 +1,7 @@
+.delete-btn {
+  cursor: pointer;
+  position: absolute;
+  left: 91%;
+  font-size: 18px;
+  margin-top: 4px;
+}

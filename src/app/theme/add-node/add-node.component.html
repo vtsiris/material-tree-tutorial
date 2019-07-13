@@ -1,2 +1,3 @@
-<button mat-stroked-button class="top-node" (click)="openDialog()">Add Main Node</button>
+<button mat-stroked-button class="top-node" (click)="openDialog()" *ngIf="isTop">Add Main Node</button>
+<i class="material-icons add-btn" *ngIf="!isTop" (click)="openDialog()"> add </i>
 
