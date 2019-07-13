@@ -7,16 +7,10 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button color="warn" (click)="onNoClick()"
-  style="
-  position: relative;
-  right: 15px;
-  "
-  >No Thanks</button>
-  <button mat-stroked-button color="primary" [mat-dialog-close]="{nodeName: data.Name, nodeDescription: data.Description}"
-  style="
-  position: relative;
-  left: 20px;
-  "
-  >{{data.Component}}</button>
+  <button mat-button color="warn" (click)="onNoClick()" style="position: relative;right: 15px;">
+    No Thanks
+  </button>
+  <button mat-stroked-button color="primary" [disabled]="!(data.Name || data.Description)" [mat-dialog-close]="{nodeName: data.Name, nodeDescription: data.Description}" style="position: relative;left: 20px;">
+    {{data.Component}}
+  </button>
 </div>
