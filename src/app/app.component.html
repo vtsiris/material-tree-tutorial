@@ -7,7 +7,7 @@
       <button mat-icon-button disabled></button>
       {{node.Name}}
       <app-delete-node (deletedNode)="deleteNode($event)" [currentNode]="node" ></app-delete-node>
-      <app-edit-node></app-edit-node>
+      <app-edit-node (edittedNode)="editNode($event)" [currentNode]="node"></app-edit-node>
       <app-add-node (addedNode)="addChildNode($event)" [isTop]="false" [currentNode]="node"></app-add-node>
     </li>
   </mat-tree-node>
@@ -24,7 +24,7 @@
         </button>
         {{node.Name}}
         <app-delete-node (deletedNode)="deleteNode($event)" [currentNode]="node" ></app-delete-node>
-        <app-edit-node></app-edit-node>
+        <app-edit-node (edittedNode)="editNode($event)" [currentNode]="node"></app-edit-node>
         <app-add-node (addedNode)="addChildNode($event)" [isTop]="false" [currentNode]="node"></app-add-node>
       </div>
       <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">

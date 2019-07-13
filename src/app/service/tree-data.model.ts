@@ -4,3 +4,9 @@ export interface TreeData {
   Description: string;
   Children: TreeData[];
 }
+
+export interface DialogData {
+  Name: string;
+  Description: string;
+  Component: string;
+}

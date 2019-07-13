@@ -50,6 +50,22 @@ export class AppComponent implements OnInit {
     this.refreshTreeData();
   }
 
+  editNode(nodeToBeEdited) {
+    const fatherElement = this.service.findFatherNode(nodeToBeEdited.currentNode.Id, this.nestedDataSource.data);
+    let elementPosition: number;
+    if (fatherElement[0]) {
+       elementPosition = this.service.findPosition(nodeToBeEdited.currentNode.Id, [fatherElement[0].Children[fatherElement[1]]]);
+   } else {
+       elementPosition = this.service.findPosition(nodeToBeEdited.currentNode.Id, this.nestedDataSource.data);
+   }
+    if (!fatherElement[0]) {
+      this.nestedDataSource.data[elementPosition] = nodeToBeEdited.node;
+    } else {
+      fatherElement[0].Children[fatherElement[1]] = nodeToBeEdited.node;
+    }
+    this.refreshTreeData();
+  }
+
   deleteNode(nodeToBeDeleted: TreeData) {
     const deletedElement: TreeData = this.service.findFatherNode(nodeToBeDeleted.Id, this.nestedDataSource.data);
     let elementPosition: number;

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, Inject } from '@angular/core';
-import { TreeData } from 'src/app/service/tree-data.model';
+import { TreeData, DialogData } from 'src/app/service/tree-data.model';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -11,16 +11,14 @@ export class EditNodeComponent {
 
   @Input() isTop: boolean;
   @Input() currentNode: TreeData;
-  @Output() addedNode = new EventEmitter;
-  name: string;
-  description: string;
+  @Output() edittedNode = new EventEmitter;
 
   constructor(public dialog: MatDialog) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(EditNodeDialog, {
       width: '250px',
-      data: {nodeName: this.name, nodeDescription: this.description}
+      data: {Name: this.currentNode.Name, Description: this.currentNode.Description, Component: 'Edit'}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -28,27 +26,25 @@ export class EditNodeComponent {
           Id: null,
           Name: result.nodeName,
           Description: result.nodeDescription,
-          Children: []
+          Children: this.currentNode.Children
         };
-        if (this.isTop) {
-          this.addedNode.emit(node);
-        } else {
-          this.addedNode.emit({currentNode: this.currentNode, node: node});
-        }
+        this.edittedNode.emit({currentNode: this.currentNode, node: node});
       }
     });
   }
 }
 
+
+
 @Component({
   selector: 'app-edit-node-dialog',
-  templateUrl: 'edit-node-dialog.html',
+  templateUrl: '../node-dialog/node-dialog.html',
 })
-export class EditNodeDialog {
 
+export class EditNodeDialog {
   constructor(
     public dialogRef: MatDialogRef<EditNodeDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: TreeData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();

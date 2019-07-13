@@ -26,21 +26,6 @@ export class TreeFunctionService {
     return Math.max(...flatArrayWithoutChildren);
   }
 
-  findNode(name: string, currentNode: TreeData[]) {
-    for (let i = 0; i < currentNode.length; i += 1) {
-      const currentChild = currentNode[i];
-      if (name === currentChild.Name) {
-        return currentChild;
-      } else {
-        const result = this.findNode(name, currentChild.Children);
-        if (result !== false) {
-          return result;
-        }
-      }
-    }
-    return false;
-  }
-
   findPosition(id: number, data: TreeData[]) {
     for (let i = 0; i < data.length; i += 1) {
       if (id === data[i].Id) {

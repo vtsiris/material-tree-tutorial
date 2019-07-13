@@ -1,4 +1,4 @@
-import { TreeData } from './../../service/tree-data.model';
+import { TreeData, DialogData } from './../../service/tree-data.model';
 import { Component, Inject, Output, EventEmitter, Input } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
@@ -21,7 +21,7 @@ export class AddNodeComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(NewNodeDialog, {
       width: '250px',
-      data: {nodeName: this.name, nodeDescription: this.description}
+      data: {nodeName: this.name, nodeDescription: this.description, Component: 'Add'}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -43,13 +43,13 @@ export class AddNodeComponent {
 
 @Component({
   selector: 'app-new-node',
-  templateUrl: 'new-node.html',
+  templateUrl: '../node-dialog/node-dialog.html',
 })
 export class NewNodeDialog {
 
   constructor(
     public dialogRef: MatDialogRef<NewNodeDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: TreeData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();

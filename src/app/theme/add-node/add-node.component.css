@@ -1,6 +1,7 @@
 .top-node {
   position: relative;
-  left: 85%
+  left: 85%;
+  margin-left: 4px;
 }
 
 .add-btn {
