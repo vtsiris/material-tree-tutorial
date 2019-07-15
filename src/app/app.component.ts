@@ -50,38 +50,34 @@ export class AppComponent implements OnInit {
     this.refreshTreeData();
   }
 
+
+
   editNode(nodeToBeEdited) {
-    const fatherElement = this.service.findFatherNode(nodeToBeEdited.currentNode.Id, this.nestedDataSource.data);
+    const fatherElement: TreeData = this.service.findFatherNode(nodeToBeEdited.currentNode.Id, this.nestedDataSource.data);
     let elementPosition: number;
+    nodeToBeEdited.node.Id = this.service.findNodeMaxId(this.nestedDataSource.data) + 1;
     if (fatherElement[0]) {
-       elementPosition = this.service.findPosition(nodeToBeEdited.currentNode.Id, [fatherElement[0].Children[fatherElement[1]]]);
+       fatherElement[0].Children[fatherElement[1]] = nodeToBeEdited.node;
    } else {
        elementPosition = this.service.findPosition(nodeToBeEdited.currentNode.Id, this.nestedDataSource.data);
+       this.nestedDataSource.data[elementPosition] = nodeToBeEdited.node;
    }
-    if (!fatherElement[0]) {
-      this.nestedDataSource.data[elementPosition] = nodeToBeEdited.node;
-    } else {
-      fatherElement[0].Children[fatherElement[1]] = nodeToBeEdited.node;
-    }
     this.refreshTreeData();
   }
+
+
 
   deleteNode(nodeToBeDeleted: TreeData) {
     const deletedElement: TreeData = this.service.findFatherNode(nodeToBeDeleted.Id, this.nestedDataSource.data);
     let elementPosition: number;
-    if (deletedElement[0]) {
-      elementPosition = this.service.findPosition(nodeToBeDeleted.Id, [deletedElement[0].Children[deletedElement[1]]]);
-    } else {
-      elementPosition = this.service.findPosition(nodeToBeDeleted.Id, this.nestedDataSource.data);
-    }
     if (window.confirm('Are you sure you want to delete ' + nodeToBeDeleted.Name + '?' )) {
-      if (!deletedElement[0]) {
-        this.nestedDataSource.data.splice(elementPosition, 1);
-        this.refreshTreeData();
-      } else {
-        deletedElement[0].Children.splice(deletedElement[1], 1);
-        this.refreshTreeData();
+        if (deletedElement[0]) {
+          deletedElement[0].Children.splice(deletedElement[1], 1);
+        } else {
+          elementPosition = this.service.findPosition(nodeToBeDeleted.Id, this.nestedDataSource.data);
+          this.nestedDataSource.data.splice(elementPosition, 1);
       }
+      this.refreshTreeData();
     }
   }
 
