@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, Inject } from '@angular/core';
-import { TreeData, DialogData } from 'src/app/service/tree-data.model';
+import { TreeData, DialogData } from '../../service/tree-data.model';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
