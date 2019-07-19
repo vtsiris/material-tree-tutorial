@@ -1,8 +1,6 @@
 .edit-btn {
   cursor: pointer;
-  position: absolute;
-  left: 93%;
+  position: fixed;
+  left: 91%;
   font-size: 18px;
-  margin-top: 4px;
-  margin-left: 3px;
 }
